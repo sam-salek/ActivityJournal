@@ -31,7 +31,7 @@ public class RootController extends Controller {
     }
 
     private void init() {
-        rootAnchorPane = loadFxml(this);
+        rootAnchorPane = loadFxmlAsNode(this);
         sidePanelController = new SidePanelController(FXMLNames.SIDE_PANEL, rootAnchorPane);
     }
 

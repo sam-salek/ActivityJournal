@@ -22,15 +22,15 @@ abstract class Controller implements Initializable {
         initFXML();
     }
 
-    protected void loadFxml(Pane parent, Controller controller) {
-        Node node = loadFxml(controller);
+    protected void loadFxmlToParent(Pane parent, Controller controller) {
+        Node node = loadFxmlAsNode(controller);
 
         if(parent != null) {
             parent.getChildren().add(node);
         }
     }
 
-    protected <T> T loadFxml(Controller controller) {
+    protected <T> T loadFxmlAsNode(Controller controller) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/" + controller.getFxmlName()));
         fxmlLoader.setController(controller);
 

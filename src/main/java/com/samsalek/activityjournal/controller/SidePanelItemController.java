@@ -15,7 +15,7 @@ public class SidePanelItemController extends Controller {
         super(fxmlName);
         this.month = Month.valueOf(nr);
 
-        loadFxml(parent, this);
+        loadFxmlToParent(parent, this);
     }
 
     @Override

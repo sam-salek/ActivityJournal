@@ -25,7 +25,7 @@ class SidePanelController extends Controller {
         super(fxmlName);
         year = new Year(2021);
 
-        loadFxml(parent, this);
+        loadFxmlToParent(parent, this);
 
         sidePanelItemControllers = new ArrayList<>();
         for(int i = 0; i < 12; i++) {
