@@ -17,7 +17,7 @@ class SidePanelController extends Controller {
     @FXML Button nextYearButton;
     @FXML VBox monthVBox;
 
-    Year year;
+    private Year year;
 
     ArrayList<SidePanelItemController> sidePanelItemControllers;
 
@@ -39,13 +39,13 @@ class SidePanelController extends Controller {
         initButtons();
     }
 
-    public void initButtons() {
-        previousYearButton.setOnAction(actionEvent -> onButtonPress(-1));
-        nextYearButton.setOnAction(actionEvent -> onButtonPress(1));
+    private void initButtons() {
+        previousYearButton.setOnAction(actionEvent -> shiftYear(-1));
+        nextYearButton.setOnAction(actionEvent -> shiftYear(1));
     }
 
-    private void onButtonPress(int shift) {
-        year = new Year(year.toInt() + shift);
+    private void shiftYear(int shiftAmount) {
+        year = new Year(year.toInt() + shiftAmount);
         yearLabel.setText(year.toString());
     }
 }

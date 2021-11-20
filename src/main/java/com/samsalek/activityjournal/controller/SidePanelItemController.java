@@ -9,7 +9,7 @@ public class SidePanelItemController extends Controller {
 
     @FXML Button root;
 
-    Month month;
+    private Month month;
 
     public SidePanelItemController(String fxmlName, Pane parent, int nr) {
         super(fxmlName);
