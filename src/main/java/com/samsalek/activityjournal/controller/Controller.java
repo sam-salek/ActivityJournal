@@ -3,24 +3,34 @@ package com.samsalek.activityjournal.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-abstract class Controller implements Initializable {
+public abstract class Controller implements Initializable {
 
-    String fxmlName;
+    protected String fxmlName;
+    protected Pane parent;
 
-    public Controller(String fxmlName) {
+    private ArrayList<Controller> observers;
+
+    public Controller(String fxmlName, Pane parent) {
         this.fxmlName = fxmlName;
+        this.parent = parent;
+
+        this.observers = new ArrayList<>();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initFXML();
     }
+
+    protected void initFXML(){};
 
     protected void loadFxmlToParent(Pane parent, Controller controller) {
         Node node = loadFxmlAsNode(controller);
@@ -43,7 +53,16 @@ abstract class Controller implements Initializable {
         return node;
     }
 
-    protected void initFXML(){};
+    /**
+     * Anchors node to its parent.
+     * @param node Child.
+     */
+    protected void anchorToParent(Node node) {
+        AnchorPane.setTopAnchor(node, 0.0);
+        AnchorPane.setRightAnchor(node, 0.0);
+        AnchorPane.setLeftAnchor(node, 0.0);
+        AnchorPane.setBottomAnchor(node, 0.0);
+    }
 
     public String getFxmlName() {
         return fxmlName;

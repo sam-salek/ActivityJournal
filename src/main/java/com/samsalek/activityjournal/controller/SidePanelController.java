@@ -1,10 +1,12 @@
 package com.samsalek.activityjournal.controller;
 
+import com.samsalek.activityjournal.model.Month;
 import com.samsalek.activityjournal.model.Year;
 import com.samsalek.activityjournal.view.FXMLNames;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -12,17 +14,19 @@ import java.util.ArrayList;
 
 class SidePanelController extends Controller {
 
-    @FXML Label yearLabel;
-    @FXML Button previousYearButton;
-    @FXML Button nextYearButton;
-    @FXML VBox monthVBox;
+    @FXML private AnchorPane rootAnchorPane;
+    @FXML private Label yearLabel;
+    @FXML private Button previousYearButton;
+    @FXML private Button nextYearButton;
+    @FXML private VBox monthVBox;
 
     private Year year;
+    private Month currentMonth;
 
-    ArrayList<SidePanelItemController> sidePanelItemControllers;
+    private ArrayList<SidePanelItemController> sidePanelItemControllers;
 
     public SidePanelController(String fxmlName, Pane parent) {
-        super(fxmlName);
+        super(fxmlName, parent);
         year = new Year(2021);
 
         loadFxmlToParent(parent, this);
@@ -35,6 +39,9 @@ class SidePanelController extends Controller {
 
     @Override
     public void initFXML() {
+        anchorToParent(rootAnchorPane);
+        rootAnchorPane.setPrefSize(parent.getPrefWidth(), parent.getPrefHeight());
+
         yearLabel.setText(year.toString());
         initButtons();
     }

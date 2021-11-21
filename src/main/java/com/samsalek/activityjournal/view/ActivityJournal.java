@@ -1,7 +1,7 @@
 package com.samsalek.activityjournal.view;
 
 import com.samsalek.activityjournal.Test;
-import com.samsalek.activityjournal.controller.RootController;
+import com.samsalek.activityjournal.controller.MainController;
 import com.samsalek.activityjournal.model.serialization.Deserializer;
 import com.samsalek.activityjournal.model.serialization.Serializer;
 import javafx.application.Application;
@@ -28,13 +28,12 @@ public class ActivityJournal extends Application {
      */
     @Override
     public void start(Stage stage) {
-        RootController rootController = RootController.getInstance();
-        Scene scene = new Scene(rootController.getView(), 1366, 768);
+        MainController mainController = MainController.getInstance();
+        Scene scene = new Scene(mainController.getRoot(), mainController.getRoot().getPrefWidth(), mainController.getRoot().getPrefHeight());
         stage.setScene(scene);
 
-        //stage.setMaximized(true);
-        stage.setMinWidth(821);
-        stage.setMinHeight(550);
+        stage.setMinWidth(mainController.getRoot().getMinWidth());
+        stage.setMinHeight(mainController.getRoot().getMinHeight());
         String title = "ActivityJournal";
         stage.setTitle(title);
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
