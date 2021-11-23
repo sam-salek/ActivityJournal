@@ -2,6 +2,7 @@ package com.samsalek.activityjournal.model.serialization;
 
 import com.google.gson.Gson;
 import com.samsalek.activityjournal.Test;
+import com.samsalek.activityjournal.util.console.DebugConsole;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,7 +36,8 @@ public class Serializer {
      * Initializes this class by running necessary methods.
      */
     private void init() {
-        gson = SerializationValues.gson;
+        gson = SerializationUtil.gson;
+        verifyDirectory();
     }
 
     /**
@@ -44,12 +46,13 @@ public class Serializer {
     public void verifyDirectory() {
         File directory;
         try {
-            directory = new File(SerializationValues.directoryPath);
+            directory = new File(SerializationUtil.directoryPath);
             if (!directory.exists()) {
+                DebugConsole.warning("Directory not found!");
                 if (directory.mkdirs()) {
-                    System.out.println("Serializer successfully created directory folder!");
+                    DebugConsole.success("Serializer successfully created directory folder!");
                 } else {
-                    System.out.println("Serializer could not create directory folder!");
+                    DebugConsole.error("Serializer could not create directory folder!");
                 }
             }
         } catch (Exception e) {
@@ -59,7 +62,7 @@ public class Serializer {
 
     public void saveFile(Test test) {
         try {
-            FileWriter fileWriter = new FileWriter(SerializationValues.directoryPath + File.separatorChar + "test.json");
+            FileWriter fileWriter = new FileWriter(SerializationUtil.directoryPath + File.separatorChar + "test.json");
             gson.toJson(test, fileWriter);
             fileWriter.close();
         } catch (IOException e) {

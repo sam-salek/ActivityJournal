@@ -2,6 +2,7 @@ package com.samsalek.activityjournal.model.serialization;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.samsalek.activityjournal.util.console.DebugConsole;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,13 +36,18 @@ public class Deserializer {
      * Initializes this class by running necessary methods.
      */
     private void init() {
-        gson = SerializationValues.gson;
+        gson = SerializationUtil.gson;
     }
 
     public <T> T readFile(Class<T> clazz, String filename) {
+        if(!SerializationUtil.directoryExists()) {
+            DebugConsole.error("Cannot read file since directory does not exist!");
+            return null;
+        }
+
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new FileReader(SerializationValues.directoryPath + File.separatorChar + filename));
+            reader = new JsonReader(new FileReader(SerializationUtil.directoryPath + File.separatorChar + filename));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

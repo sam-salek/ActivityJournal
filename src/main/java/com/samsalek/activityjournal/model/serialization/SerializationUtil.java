@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 
-class SerializationValues {
+class SerializationUtil {
 
     public static final Gson gson = new GsonBuilder()
                                         .setPrettyPrinting()
@@ -21,4 +21,9 @@ class SerializationValues {
      * Path to the main directory for all save files.
      */
     public static final String directoryPath = System.getProperty("user.home") + File.separatorChar + directoryName;
+
+    public static boolean directoryExists() {
+        File directory = new File(directoryPath);
+        return directory.exists();
+    }
 }
