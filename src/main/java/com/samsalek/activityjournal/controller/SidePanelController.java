@@ -2,6 +2,8 @@ package com.samsalek.activityjournal.controller;
 
 import com.samsalek.activityjournal.model.Month;
 import com.samsalek.activityjournal.model.Year;
+import com.samsalek.activityjournal.util.event.Event;
+import com.samsalek.activityjournal.util.event.EventHandler;
 import com.samsalek.activityjournal.view.FXMLNames;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,8 +30,12 @@ class SidePanelController extends Controller {
     public SidePanelController(String fxmlName, Pane parent) {
         super(fxmlName, parent);
         year = new Year(2021);
-
         loadFxmlToParent(parent, this);
+
+        anchorToParent(rootAnchorPane);
+        rootAnchorPane.setPrefSize(parent.getPrefWidth(), parent.getPrefHeight());
+        yearLabel.setText(year.toString());
+        initButtons();
 
         sidePanelItemControllers = new ArrayList<>();
         for(int i = 0; i < 12; i++) {
@@ -37,22 +43,19 @@ class SidePanelController extends Controller {
         }
     }
 
-    @Override
-    public void initFXML() {
-        anchorToParent(rootAnchorPane);
-        rootAnchorPane.setPrefSize(parent.getPrefWidth(), parent.getPrefHeight());
-
-        yearLabel.setText(year.toString());
-        initButtons();
-    }
-
     private void initButtons() {
-        previousYearButton.setOnAction(actionEvent -> shiftYear(-1));
-        nextYearButton.setOnAction(actionEvent -> shiftYear(1));
+        previousYearButton.setOnAction(actionEvent -> {
+            shiftYear(-1);
+            EventHandler.triggerEvent(new Event.YearChange(year));
+        });
+        nextYearButton.setOnAction(actionEvent -> {
+            shiftYear(1);
+            EventHandler.triggerEvent(new Event.YearChange(year));
+        });
     }
 
     private void shiftYear(int shiftAmount) {
-        year = new Year(year.toInt() + shiftAmount);
+        year.setYear(year.toInt() + shiftAmount);
         yearLabel.setText(year.toString());
     }
 }

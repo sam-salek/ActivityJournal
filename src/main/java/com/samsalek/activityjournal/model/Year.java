@@ -28,4 +28,8 @@ public class Year {
     public int toInt() {
         return year;
     }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 }

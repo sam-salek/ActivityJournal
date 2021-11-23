@@ -6,7 +6,6 @@ public class PropertyItemController extends Controller {
 
     public PropertyItemController(String fxmlName, Pane parent) {
         super(fxmlName, parent);
-
         loadFxmlToParent(parent, this);
     }
 }

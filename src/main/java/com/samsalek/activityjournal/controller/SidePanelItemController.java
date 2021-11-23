@@ -16,17 +16,13 @@ public class SidePanelItemController extends Controller {
     public SidePanelItemController(String fxmlName, Pane parent, int nr) {
         super(fxmlName, parent);
         this.month = Month.valueOf(nr);
-
         loadFxmlToParent(parent, this);
-    }
 
-    @Override
-    protected void initFXML() {
         root.setText(month.toString());
         initOnButtonPress();
     }
 
     private void initOnButtonPress() {
-        root.setOnAction(actionEvent -> EventHandler.fireEvent(new Event.MonthButtonPress(month)));
+        root.setOnAction(actionEvent -> EventHandler.triggerEvent(new Event.MonthButtonPress(month)));
     }
 }
