@@ -2,9 +2,10 @@
 
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" style="-fx-background-color: purple;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="topPanelAnchorPane" prefHeight="80.0" prefWidth="1100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="firstTopPanelAnchorPane" prefHeight="80.0" prefWidth="1100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="secondTopPanelAnchorPane" layoutY="80.0" prefHeight="80.0" prefWidth="1100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0" />
+      <AnchorPane fx:id="listAnchorPane" layoutY="160.0" prefHeight="485.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="160.0" />
    </children>
 </AnchorPane>
