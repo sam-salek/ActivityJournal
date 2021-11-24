@@ -2,7 +2,6 @@ package com.samsalek.activityjournal.controller;
 
 import com.samsalek.activityjournal.util.event.EventHandler;
 import com.samsalek.activityjournal.util.event.Event;
-import com.samsalek.activityjournal.util.event.EventListenerData;
 import com.samsalek.activityjournal.view.FXMLNames;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -26,10 +25,10 @@ public class ContentPanelController extends Controller {
         firstPropertyPanelController = new PropertyPanelController(FXMLNames.PROPERTY_PANEL, firstTopPanelAnchorPane, "2021");
         secondPropertyPanelController = new PropertyPanelController(FXMLNames.PROPERTY_PANEL, secondTopPanelAnchorPane, "JANUARY");
 
-        EventListenerData test = EventHandler.addListener(Event.YearChange.class, event -> {
+        EventHandler.createListener(Event.YearChange.class, event -> {
             firstPropertyPanelController.setPanelName(event.getYear().toString());
         });
-        EventHandler.addListener(Event.MonthButtonPress.class, event -> {
+        EventHandler.createListener(Event.MonthButtonPress.class, event -> {
             secondPropertyPanelController.setPanelName(event.getMonth().toString());
         });
     }

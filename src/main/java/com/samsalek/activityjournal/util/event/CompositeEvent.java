@@ -1,10 +1,10 @@
 package com.samsalek.activityjournal.util.event;
 
-public class EventComposite<T extends Event> {
+public class CompositeEvent<T extends Event> {
 
     private Class<T>[] eventClasses;
 
-    public EventComposite(Class<T>... eventClasses) {
+    public CompositeEvent(Class<T>... eventClasses) {
         this.eventClasses = eventClasses;
     }
 

@@ -5,57 +5,92 @@ import com.samsalek.activityjournal.util.console.DebugConsole;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Handles the interaction between events and their listeners.
+ * This class can create listeners to events, and can trigger an Event.
+ */
 public class EventHandler {
 
-    private static final HashMap<Class<? extends Event>, ArrayList<EventListenerData>> eventListenerMap = new HashMap<>();
+
+    private static final HashMap<Class<? extends Event>, ArrayList<EventListener>> eventListenerMap = new HashMap<>();
 
     private EventHandler(){}
 
-    public static <T extends Event> EventListenerData<T> addListener(Class<T> eventClass, IEventListener<T> iEventListener) {
+    /**
+     * Creates and adds a listener of Event to the EventHandler.
+     * @param eventClass Class of event the listener should listen to.
+     * @param iEventListenerAction The action that should be taken when the event is triggered.
+     * @param <T> Any class of type Event.
+     * @return The created listener.
+     */
+    public static <T extends Event> EventListener<T> createListener(Class<T> eventClass, IEventListenerAction<T> iEventListenerAction) {
         if(eventListenerMap.get(eventClass) == null) {
             eventListenerMap.put(eventClass, new ArrayList<>());
         }
 
-        EventListenerData<T> eventListenerData = new EventListenerData<>(eventClass, iEventListener);
-        addToMap(eventClass, eventListenerData);
-        return eventListenerData;
+        EventListener<T> eventListener = new EventListener<>(eventClass, iEventListenerAction);
+        addToMap(eventClass, eventListener);
+        return eventListener;
     }
 
-    public static <T extends Event> ArrayList<EventListenerData<T>> addListeners(EventComposite eventComposite, IEventListener<T> iEventListener) {
-        ArrayList<EventListenerData<T>> eventListenerDataList = new ArrayList<>();
-        for (var eventClass : eventComposite.getEventClasses()) {
-            EventListenerData<T> eventListenerData = addListener(eventClass, iEventListener);
-            eventListenerDataList.add(eventListenerData);
+    /**
+     * Creates and adds a listener of CompositeEvent to the EventHandler.
+     * @param compositeEvent A composite of Events.
+     * @param iEventListenerAction The action that should be taken when any of the events contained in compositeEvent is triggered.
+     * @param <T> Any class of type Event.
+     * @return The created listener.
+     */
+    public static <T extends Event> ArrayList<EventListener<T>> createListener(CompositeEvent compositeEvent, IEventListenerAction<T> iEventListenerAction) {
+        ArrayList<EventListener<T>> eventListenerList = new ArrayList<>();
+        for (var eventClass : compositeEvent.getEventClasses()) {
+            EventListener<T> eventListener = createListener(eventClass, iEventListenerAction);
+            eventListenerList.add(eventListener);
         }
-        return eventListenerDataList;
+        return eventListenerList;
     }
 
-    public static <T extends Event> void removeListener(EventListenerData<T> eventListenerData) {
-        removeFromMap(eventListenerData);
+    /**
+     * Removes a listener from the EventHandler.
+     * @param eventListener The listener to be removed.
+     * @param <T> Any class of type Event.
+     */
+    public static <T extends Event> void removeListener(EventListener<T> eventListener) {
+        removeFromMap(eventListener);
     }
 
-    public static void triggerEvent(Event event) {
-        var eventListenerDataList  = eventListenerMap.get(event.getClass());
-        if(eventListenerDataList == null) {
+    /**
+     * Triggers one or more events. Every listener of the event will have their action performed.
+     * @param events The events to be triggered.
+     */
+    public static void triggerEvent(Event... events) {
+        for (Event event : events) {
+            triggerEvent(event);
+        }
+    }
+
+    private static void triggerEvent(Event event) {
+        if(eventListenerMap.get(event.getClass()) == null) {
             return;
         }
 
-        for (var listenerData : eventListenerDataList) {
-            if(listenerData.isActive()) {
-                listenerData.getIEventListener().onEvent(event);
+        for (var listener : eventListenerMap.get(event.getClass())) {
+            if(listener.isActive()) {
+                listener.getAction().onEvent(event);
                 DebugConsole.notify("Event \"" + event.getClass().getSimpleName() + "\" was fired!");
             }
         }
     }
 
-    private static void addToMap(Class<? extends Event> event, EventListenerData<? extends Event> eventListenerData) {
-        eventListenerMap.get(event).add(eventListenerData);
+
+
+    private static void addToMap(Class<? extends Event> event, EventListener<? extends Event> eventListener) {
+        eventListenerMap.get(event).add(eventListener);
     }
 
-    private static void removeFromMap(EventListenerData<? extends Event> eventListenerData) {
-        eventListenerMap.get(eventListenerData.getEventClass()).remove(eventListenerData);
-        if(eventListenerMap.get(eventListenerData.getEventClass()).isEmpty()) {
-            eventListenerMap.remove(eventListenerData.getEventClass());
+    private static void removeFromMap(EventListener<? extends Event> eventListener) {
+        eventListenerMap.get(eventListener.getEventClass()).remove(eventListener);
+        if(eventListenerMap.get(eventListener.getEventClass()).isEmpty()) {
+            eventListenerMap.remove(eventListener.getEventClass());
         }
     }
 }

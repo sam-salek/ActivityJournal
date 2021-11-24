@@ -3,9 +3,7 @@ package com.samsalek.activityjournal.util.event;
 import com.samsalek.activityjournal.model.Month;
 import com.samsalek.activityjournal.model.Year;
 
-public class Event {
-
-    private Event(){}
+public abstract class Event {
 
     public static class YearChange extends Event {
 

@@ -1,15 +1,15 @@
 package com.samsalek.activityjournal.util.event;
 
-public class EventListenerData<T extends Event> {
+public class EventListener<T extends Event> {
 
     private final Class<T> eventClass;
-    private final IEventListener<T> iEventListener;
+    private final IEventListenerAction<T> action;
 
     private boolean active;
 
-    EventListenerData(Class<T> eventClass, IEventListener<T> iEventListener) {
+    EventListener(Class<T> eventClass, IEventListenerAction<T> action) {
         this.eventClass = eventClass;
-        this.iEventListener = iEventListener;
+        this.action = action;
         active = true;
     }
 
@@ -21,8 +21,8 @@ public class EventListenerData<T extends Event> {
         active = false;
     }
 
-    IEventListener<T> getIEventListener() {
-        return iEventListener;
+    IEventListenerAction<T> getAction() {
+        return action;
     }
 
     public Class<T> getEventClass() {
