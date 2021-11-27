@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="dateLabel" layoutX="14.0" layoutY="14.0" text="Label" />
+      <Label fx:id="timeLabel" layoutX="118.0" layoutY="14.0" text="Label" />
+      <Label fx:id="activityLabel" layoutX="14.0" layoutY="42.0" text="Label" />
+      <AnchorPane fx:id="propertyItemSlotAnchorPane" layoutX="386.0" layoutY="18.0" prefHeight="62.0" prefWidth="129.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+   </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+</AnchorPane>
