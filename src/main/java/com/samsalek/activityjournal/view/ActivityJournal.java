@@ -29,11 +29,11 @@ public class ActivityJournal extends Application {
     @Override
     public void start(Stage stage) {
         MainController mainController = MainController.getInstance();
-        Scene scene = new Scene(mainController.getRoot(), mainController.getRoot().getPrefWidth(), mainController.getRoot().getPrefHeight());
+        Scene scene = new Scene(mainController.getRootAnchorPane(), mainController.getRootAnchorPane().getPrefWidth(), mainController.getRootAnchorPane().getPrefHeight());
         stage.setScene(scene);
 
-        stage.setMinWidth(mainController.getRoot().getMinWidth());
-        stage.setMinHeight(mainController.getRoot().getMinHeight());
+        stage.setMinWidth(mainController.getRootAnchorPane().getMinWidth());
+        stage.setMinHeight(mainController.getRootAnchorPane().getMinHeight());
         String title = "ActivityJournal";
         stage.setTitle(title);
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));

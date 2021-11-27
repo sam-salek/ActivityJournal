@@ -13,11 +13,11 @@ public class EventListener<T extends Event> {
         active = true;
     }
 
-    public void enableListener() {
+    public void enable() {
         active = true;
     }
 
-    public void disableListener() {
+    public void disable() {
         active = false;
     }
 

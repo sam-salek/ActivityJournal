@@ -23,12 +23,11 @@ class SidePanelController extends Controller {
     @FXML private VBox monthVBox;
 
     private Year year;
-    private Month currentMonth;
 
     private ArrayList<SidePanelItemController> sidePanelItemControllers;
 
-    public SidePanelController(String fxmlName, Pane parent) {
-        super(fxmlName, parent);
+    public SidePanelController(Pane parent) {
+        super(FXMLNames.SIDE_PANEL, parent);
         year = new Year(2021);
         loadFxmlToParent(parent, this);
 
@@ -39,7 +38,7 @@ class SidePanelController extends Controller {
 
         sidePanelItemControllers = new ArrayList<>();
         for(int i = 0; i < 12; i++) {
-            sidePanelItemControllers.add(new SidePanelItemController(FXMLNames.SIDE_PANEL_ITEM, monthVBox, i+1));
+            sidePanelItemControllers.add(new SidePanelItemController(monthVBox, i+1));
         }
     }
 

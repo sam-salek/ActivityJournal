@@ -17,14 +17,14 @@ public class PropertyPanelController extends Controller {
 
     private ArrayList<PropertyItemController> propertyItemControllers;
 
-    public PropertyPanelController(String fxmlName, Pane parent, String name) {
-        super(fxmlName, parent);
+    public PropertyPanelController(Pane parent, String name) {
+        super(FXMLNames.PROPERTY_PANEL, parent);
         loadFxmlToParent(parent, this);
         nameLabel.setText(name);
 
         propertyItemControllers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            propertyItemControllers.add(new PropertyItemController(FXMLNames.PROPERTY_ITEM, propertiesHBox));
+            propertyItemControllers.add(new PropertyItemController(propertiesHBox));
         }
     }
 

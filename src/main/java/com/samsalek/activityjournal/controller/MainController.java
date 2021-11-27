@@ -37,32 +37,13 @@ public class MainController extends Controller {
 
     private void init() {
         rootAnchorPane = loadFxmlAsNode(this);
-        sidePanelController = new SidePanelController(FXMLNames.SIDE_PANEL, sidePanelAnchorPane);
-        propertyPanelTotalController = new PropertyPanelController(FXMLNames.PROPERTY_PANEL, topPanelAnchorPane, "TOTAL");
-        contentPanelController = new ContentPanelController(FXMLNames.CONTENT_PANEL, contentPanelAnchorPane);
-    }
 
-    public AnchorPane getRoot() {
-        return rootAnchorPane;
+        sidePanelController = new SidePanelController(sidePanelAnchorPane);
+        propertyPanelTotalController = new PropertyPanelController(topPanelAnchorPane, "TOTAL");
+        contentPanelController = new ContentPanelController(contentPanelAnchorPane);
     }
 
     public AnchorPane getRootAnchorPane() {
         return rootAnchorPane;
-    }
-
-    public AnchorPane getSidePanelAnchorPane() {
-        return sidePanelAnchorPane;
-    }
-
-    public SidePanelController getSidePanelController() {
-        return sidePanelController;
-    }
-
-    public PropertyPanelController getPropertyPanelTotalController() {
-        return propertyPanelTotalController;
-    }
-
-    public ContentPanelController getContentPanelController() {
-        return contentPanelController;
     }
 }
