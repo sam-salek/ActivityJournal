@@ -2,57 +2,65 @@ package com.samsalek.activityjournal.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public enum Month {
-    JANUARY(1),
-    FEBRUARY(2),
-    MARCH(3),
-    APRIL(4),
-    MAY(5),
-    JUNE(6),
-    JULY(7),
-    AUGUST(8),
-    SEPTEMBER(9),
-    OCTOBER(10),
-    NOVEMBER(11),
-    DECEMBER(12);
+public class Month {
 
-    private final int nr;
-    private ArrayList<Activity> properties;
-
-    Month(int nr) {
-        this.nr = nr;
-        properties = new ArrayList<>();
-
-
-        if(nr == 3) {
-            properties.add(new Activity(new Date(2021, 9, 5),
-                    new Time(13, 46),
-                    "Bought a new XC70"));
-
-            properties.add(new Activity(new Date(2021, 3, 24),
-                    new Time(6, 32),
-                    "Went to the cinema and saw a horror movie with a group of friends"));
-        }
+    public enum Name {
+        JANUARY,
+        FEBRUARY,
+        MARCH,
+        APRIL,
+        MAY,
+        JUNE,
+        JULY,
+        AUGUST,
+        SEPTEMBER,
+        OCTOBER,
+        NOVEMBER,
+        DECEMBER
     }
 
-    public static Month valueOf(int value) {
-        return Arrays.stream(values())
-                .filter(month -> month.nr == value)
+    private int year;
+    private Month.Name name;
+    private ArrayList<Activity> activities;
+
+    Month(int year, Month.Name monthName) {
+        this.year = year;
+        this.name = monthName;
+        activities = new ArrayList<>();
+    }
+
+    public static Month.Name valueOf(int value) {
+        return Arrays.stream(Name.values())
+                .filter(month -> month.ordinal()+1 == value)
                 .findFirst()
                 .orElse(null);
     }
 
     @Override
     public String toString() {
-        return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+        return this.name.toString().substring(0, 1).toUpperCase() + this.name.toString().substring(1).toLowerCase();
+    }
+
+    public void addActivity(Activity activity) {
+        activities.add(activity);
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public Name getName() {
+        return name;
     }
 
     public int getNr() {
-        return nr;
+        return name.ordinal() + 1;
     }
 
-    public ArrayList<Activity> getProperties() {
-        return properties;
+    public List<Activity> getActivities() {
+        return Collections.unmodifiableList(activities);
     }
 }
