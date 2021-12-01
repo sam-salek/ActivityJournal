@@ -1,35 +1,12 @@
 package com.samsalek.activityjournal.util.event;
 
-public class EventListener<T extends Event> {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    private final Class<T> eventClass;
-    private final IEventListenerAction<T> action;
-
-    private boolean active;
-
-    EventListener(Class<T> eventClass, IEventListenerAction<T> action) {
-        this.eventClass = eventClass;
-        this.action = action;
-        active = true;
-    }
-
-    public void enable() {
-        active = true;
-    }
-
-    public void disable() {
-        active = false;
-    }
-
-    IEventListenerAction<T> getAction() {
-        return action;
-    }
-
-    public Class<T> getEventClass() {
-        return eventClass;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface EventListener {
+    ListenerPriority priority() default ListenerPriority.NORMAL;
 }

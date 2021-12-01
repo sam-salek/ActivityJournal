@@ -2,95 +2,73 @@ package com.samsalek.activityjournal.util.event;
 
 import com.samsalek.activityjournal.util.console.DebugConsole;
 
+import java.lang.reflect.Method;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Handles the interaction between events and their listeners.
- * This class can create listeners to events, and can trigger an Event.
- */
 public class EventHandler {
 
-
-    private static final HashMap<Class<? extends Event>, ArrayList<EventListener>> eventListenerMap = new HashMap<>();
+    private static final HashMap<Class<? extends Event>, ArrayList<ArrayList<MethodContainer>>> eventListenerMap = new HashMap<>();
 
     private EventHandler(){}
 
-    /**
-     * Creates and adds a listener of Event to the EventHandler.
-     * @param eventClass Class of event the listener should listen to.
-     * @param iEventListenerAction The action that should be taken when the event is triggered.
-     * @param <T> Any class of type Event.
-     * @return The created listener.
-     */
-    public static <T extends Event> EventListener<T> createListener(Class<T> eventClass, IEventListenerAction<T> iEventListenerAction) {
-        if(eventListenerMap.get(eventClass) == null) {
-            eventListenerMap.put(eventClass, new ArrayList<>());
-        }
-
-        EventListener<T> eventListener = new EventListener<>(eventClass, iEventListenerAction);
-        addToMap(eventClass, eventListener);
-        return eventListener;
-    }
-
-    /**
-     * Creates and adds a listener of CompositeEvent to the EventHandler.
-     * @param compositeEvent A composite of Events.
-     * @param iEventListenerAction The action that should be taken when any of the events contained in compositeEvent is triggered.
-     * @param <T> Any class of type Event.
-     * @return The created listener.
-     */
-    public static <T extends Event> ArrayList<EventListener<T>> createListener(CompositeEvent compositeEvent, IEventListenerAction<T> iEventListenerAction) {
-        ArrayList<EventListener<T>> eventListenerList = new ArrayList<>();
-        for (var eventClass : compositeEvent.getEventClasses()) {
-            EventListener<T> eventListener = createListener(eventClass, iEventListenerAction);
-            eventListenerList.add(eventListener);
-        }
-        return eventListenerList;
-    }
-
-    /**
-     * Removes a listener from the EventHandler.
-     * @param eventListener The listener to be removed.
-     * @param <T> Any class of type Event.
-     */
-    public static <T extends Event> void removeListener(EventListener<T> eventListener) {
-        removeFromMap(eventListener);
-    }
-
-    /**
-     * Triggers one or more events. Every listener of the event will have their action performed.
-     * @param events The events to be triggered.
-     */
-    public static void triggerEvent(Event... events) {
-        for (Event event : events) {
-            triggerEvent(event);
-        }
-    }
-
-    private static void triggerEvent(Event event) {
-        if(eventListenerMap.get(event.getClass()) == null) {
-            return;
-        }
-
-        for (var listener : eventListenerMap.get(event.getClass())) {
-            if(listener.isActive()) {
-                listener.getAction().onEvent(event);
-                DebugConsole.notify("Event \"" + event.getClass().getSimpleName() + "\" was fired!");
+    public static void addEventListenerClass(Object object) {
+        for (Method method : object.getClass().getDeclaredMethods()) {
+            if(isValidMethod(method)) {
+                Class<? extends Event> clazz = (Class<? extends Event>) method.getParameterTypes()[0];
+                ListenerPriority listenerPriority = method.getAnnotation(EventListener.class).priority();
+                addToMap(clazz, listenerPriority, object, method);
             }
         }
     }
 
+    public static void triggerEvent(Event event) {
+        DebugConsole.notify("Event \"" + event.getClass().getSimpleName() + "\" was triggered!");
 
+        // For each ListenerPriority...
+        for(int i = (ListenerPriority.values().length - 1); i >= 0; i--) {
+            ArrayList<MethodContainer> methodContainers = eventListenerMap.get(event.getClass()).get(i);
 
-    private static void addToMap(Class<? extends Event> event, EventListener<? extends Event> eventListener) {
-        eventListenerMap.get(event).add(eventListener);
+            // For each MethodContainer in the current priority list...
+            for (MethodContainer methodContainer : methodContainers) {
+                methodContainer.runMethod(event);
+                DebugConsole.success("An EventListener in \"" +
+                        methodContainer.getObject().getClass().getSimpleName() +
+                        "\" heard the event \"" + event.getClass().getSimpleName() + "\"!");
+            }
+        }
     }
 
-    private static void removeFromMap(EventListener<? extends Event> eventListener) {
-        eventListenerMap.get(eventListener.getEventClass()).remove(eventListener);
-        if(eventListenerMap.get(eventListener.getEventClass()).isEmpty()) {
-            eventListenerMap.remove(eventListener.getEventClass());
+    private static void addToMap(Class<? extends Event> eventClass, ListenerPriority listenerPriority, Object object, Method method) {
+        if(eventListenerMap.get(eventClass) == null) {
+            eventListenerMap.put(eventClass, new ArrayList<>());
+
+            for (ListenerPriority lp : ListenerPriority.values()) {
+                eventListenerMap.get(eventClass).add(new ArrayList<>());
+            }
         }
+
+        MethodContainer methodContainer = new MethodContainer(listenerPriority, object, method);
+        eventListenerMap.get(eventClass).get(listenerPriority.ordinal()).add(methodContainer);
+    }
+
+    private static boolean isValidMethod(Method method) {
+        if(methodIsEventListener(method) && methodHasOneParameter(method)) {
+            return methodParameterIsEvent(method.getParameterTypes()[0]);
+        }
+        return false;
+    }
+
+    private static boolean methodIsEventListener(Method method) {
+         return method.isAnnotationPresent(EventListener.class);
+    }
+
+    private static boolean methodHasOneParameter(Method method) {
+        return method.getParameterTypes().length == 1;
+    }
+
+    private static boolean methodParameterIsEvent(Class<?> methodParameterType) {
+        return Event.class.isAssignableFrom(methodParameterType);
     }
 }
