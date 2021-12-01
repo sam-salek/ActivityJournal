@@ -6,6 +6,7 @@ import com.samsalek.activityjournal.model.serialization.JSONSerializer;
 import com.samsalek.activityjournal.util.event.EventHandler;
 import com.samsalek.activityjournal.util.event.Event;
 import com.samsalek.activityjournal.util.event.EventListener;
+import com.samsalek.activityjournal.util.event.ListenerPriority;
 import com.samsalek.activityjournal.view.FXMLNames;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
@@ -59,14 +60,10 @@ public class ContentPanelController extends Controller {
         populateActivityItems(event.getMonth());
     }
 
-    @EventListener
+    @EventListener(priority = ListenerPriority.HIGHEST)
     private void onActivityCreated(Event.ActivityCreated event) {
         new ActivityItemController(activityItemsFlowPane, event.getActivity());
-        //event.getMonth().addActivity(event.getActivity());
-        event.getYear().getMonth(event.getMonthName()).addActivity(event.getActivity());
-
-        for (Month month : event.getYear().getMonths()) {
-            JSONSerializer.getInstance().saveMonth(month);
-        }
+        event.getMonth().addActivity(event.getActivity());
+        JSONSerializer.getInstance().saveMonth(event.getMonth());
     }
 }

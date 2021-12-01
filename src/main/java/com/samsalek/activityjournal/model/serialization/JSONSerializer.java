@@ -85,7 +85,7 @@ public class JSONSerializer {
 
     private void saveFile(Object objectToSave, String saveFilePath) {
         try {
-            String filepath = saveFilePath + ".json";
+            String filepath = saveFilePath;
             FileWriter fileWriter = new FileWriter( filepath);
             gson.toJson(objectToSave, fileWriter);
             fileWriter.close();

@@ -72,7 +72,7 @@ class SidePanelController extends Controller {
             Date date = new Date(2021, 9, 3);
             Time time = new Time(4, 53);
             Activity activity = new Activity(date, time, "new activity", Property.get("test4"));
-            EventHandler.triggerEvent(new Event.ActivityCreated(activity, year, currentMonth.getName()));
+            EventHandler.triggerEvent(new Event.ActivityCreated(activity, year, currentMonth));
         });
     }
 

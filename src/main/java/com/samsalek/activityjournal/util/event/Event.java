@@ -36,12 +36,12 @@ public abstract class Event {
 
         private final Activity activity;
         private final Year year;
-        private final Month.Name monthName;
+        private final Month month;
 
-        public ActivityCreated(Activity activity, Year year, Month.Name monthName) {
+        public ActivityCreated(Activity activity, Year year, Month month) {
             this.activity = activity;
             this.year = year;
-            this.monthName = monthName;
+            this.month = month;
         }
 
         public Activity getActivity() {
@@ -52,8 +52,8 @@ public abstract class Event {
             return year;
         }
 
-        public Month.Name getMonthName() {
-            return monthName;
+        public Month getMonth() {
+            return month;
         }
     }
 }

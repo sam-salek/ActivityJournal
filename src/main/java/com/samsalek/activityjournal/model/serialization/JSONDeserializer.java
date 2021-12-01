@@ -47,8 +47,12 @@ public class JSONDeserializer {
             return null;
         }
 
-        String filePath = SerializationUtil.getMonthSaveFilePath(month);
-        return readFile(Month.class, filePath);
+        if(SerializationUtil.monthSaveFileExists(month)) {
+            String filePath = SerializationUtil.getMonthSaveFilePath(month);
+            return readFile(Month.class, filePath);
+        } else {
+            return null;
+        }
     }
 
     private  <T> T readFile(Class<T> clazz, String filePath) {
@@ -59,7 +63,7 @@ public class JSONDeserializer {
 
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new FileReader(filePath + ".json"));
+            reader = new JsonReader(new FileReader(filePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

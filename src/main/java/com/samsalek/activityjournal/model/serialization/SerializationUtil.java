@@ -33,8 +33,13 @@ class SerializationUtil {
         return yearFolder.exists();
     }
 
+    public static boolean monthSaveFileExists(Month month) {
+        File monthSaveFile = new File(getMonthSaveFilePath(month));
+        return monthSaveFile.exists();
+    }
+
     public static String getMonthSaveFilePath(Month month) {
-        return SerializationUtil.directoryPath + File.separatorChar + month.getYear() + File.separatorChar + getMonthSaveFileName(month);
+        return SerializationUtil.directoryPath + File.separatorChar + month.getYear() + File.separatorChar + getMonthSaveFileName(month) + ".json";
     }
 
     private static String getMonthSaveFileName(Month month) {
