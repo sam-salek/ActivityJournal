@@ -27,7 +27,7 @@ public class ActivityItemController extends Controller {
         dateLabel.setText(activity.getDate().toString());
         timeLabel.setText(activity.getTime().toString());
         activityLabel.setText(activity.getDescription());
-        propertyItemController = new PropertyItemController(propertyItemSlotAnchorPane);
+        propertyItemController = new PropertyItemController(propertyItemSlotAnchorPane, activity.getProperty());
         //rootAnchorPane.setMinSize(parent.getPrefWidth(), parent.getPrefHeight());
 
     }

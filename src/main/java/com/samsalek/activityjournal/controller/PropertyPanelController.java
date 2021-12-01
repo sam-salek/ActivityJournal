@@ -1,5 +1,6 @@
 package com.samsalek.activityjournal.controller;
 
+import com.samsalek.activityjournal.model.Property;
 import com.samsalek.activityjournal.view.FXMLNames;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -24,7 +25,7 @@ public class PropertyPanelController extends Controller {
 
         propertyItemControllers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            propertyItemControllers.add(new PropertyItemController(propertiesHBox));
+            propertyItemControllers.add(new PropertyItemController(propertiesHBox, Property.get("test1")));
         }
     }
 

@@ -5,11 +5,13 @@ public class Activity {
     private Date date;
     private Time time;
     private String description;
+    private Property property;
 
-    public Activity(Date date, Time time, String description) {
+    public Activity(Date date, Time time, String description, Property property) {
         this.date = date;
         this.time = time;
         this.description = description;
+        this.property = property;
     }
 
     public Date getDate() {
@@ -22,5 +24,9 @@ public class Activity {
 
     public String getDescription() {
         return description;
+    }
+
+    public Property getProperty() {
+        return property;
     }
 }
