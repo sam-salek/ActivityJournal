@@ -1,9 +1,6 @@
 package com.samsalek.activityjournal.view;
 
-import com.samsalek.activityjournal.Test;
 import com.samsalek.activityjournal.controller.MainController;
-import com.samsalek.activityjournal.model.serialization.Deserializer;
-import com.samsalek.activityjournal.model.serialization.Serializer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -41,8 +38,6 @@ public class ActivityJournal extends Application {
 
         mainStage = stage;
         initShutdownHook();
-
-        Test test = Deserializer.getInstance().readFile(Test.class, "test.json");
     }
 
     /**
@@ -50,7 +45,7 @@ public class ActivityJournal extends Application {
      */
     private void initShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            Serializer.getInstance().saveFile(new Test("Sam Salek", 21, 283, true));
+
         }));
     }
 
